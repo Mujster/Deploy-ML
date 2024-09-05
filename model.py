@@ -1,21 +1,18 @@
-import numpy as np
-import pandas as pd
+from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-import pickle
-import requests
-import json
-import os
+from sklearn.linear_model import LogisticRegression
+import joblib
 
-dataset = pd.read_csv('Salary_Data.csv')
-X = dataset.iloc[:, :-1].values
-y = dataset.iloc[:, 1].values
+# Load dataset
+data = load_iris()
+X, y = data.data, data.target
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=0)
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-regressor = LinearRegression()
-regressor.fit(X_train, y_train)
-y_pred = regressor.predict(X_test)
+# Train model
+model = LogisticRegression(max_iter=200)
+model.fit(X_train, y_train)
 
-if not os.path.exists('model.pkl'):
-    pickle.dump(regressor, open('model.pkl', 'wb'))
+# Save model
+joblib.dump(model, 'model.pkl')
