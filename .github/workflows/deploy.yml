@@ -1,9 +1,9 @@
-name: Deploy to Render
+name: Deploy to PythonAnywhere
 
 on:
   push:
     branches:
-      - main  
+      - main  # Trigger deployment on push to the main branch
 
 jobs:
   deploy:
@@ -16,18 +16,19 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.8'  # Specify your Python version
 
     - name: Install dependencies
       run: |
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Deploy to Render
+    - name: Deploy to PythonAnywhere
       env:
-        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}  
+        PYTHONANYWHERE_API_KEY: ${{ secrets.PYTHONANYWHERE_API_KEY }}
       run: |
-        curl -X POST "https://api.render.com/v1/services/SERVICE_ID/deploys" \
-        -H "Authorization: Bearer $RENDER_API_KEY" \
-        -H "Accept: application/json" \
-        -H "Content-Type: application/json" \
-        --data '{"clearCache": false}'
+        # Install PythonAnywhere client
+        pip install pythonanywhere
+
+        # Deploy using PythonAnywhere API
+        pythonanywhere --username <your-username> --password $PYTHONANYWHERE_API_KEY deploy
