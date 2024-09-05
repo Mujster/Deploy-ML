@@ -1,10 +1,9 @@
-# .github/workflows/deploy.yml
-name: Deploy to Vercel
+name: Deploy to Render
 
 on:
   push:
     branches:
-      - main  # Change to your branch
+      - main  
 
 jobs:
   deploy:
@@ -23,10 +22,12 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Deploy to Vercel
+    - name: Deploy to Render
       env:
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}  
       run: |
-        npx vercel --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID --project=$VERCEL_PROJECT_ID --prod
+        curl -X POST "https://api.render.com/v1/services/SERVICE_ID/deploys" \
+        -H "Authorization: Bearer $RENDER_API_KEY" \
+        -H "Accept: application/json" \
+        -H "Content-Type: application/json" \
+        --data '{"clearCache": false}'
