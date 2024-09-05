@@ -31,7 +31,7 @@ jobs:
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
-        python createspace.py
+        python3 createspace.py
 
     - name: Deploy to Hugging Face
       run: |
