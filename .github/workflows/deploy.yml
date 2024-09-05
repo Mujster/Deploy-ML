@@ -31,7 +31,7 @@ jobs:
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
-        python -c "import os from huggingface_hub import HfApi api = HfApi() api.create_repo(name='my-space', repo_type='space', token=os.getenv('HF_TOKEN'))"
+        python createspace.py
 
     - name: Deploy to Hugging Face
       run: |
