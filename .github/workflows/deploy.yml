@@ -37,7 +37,7 @@ jobs:
         git add .
         git commit -m "Initial commit"
         git branch -M main
-        git remote add origin https://huggingface.co/spaces/mujster/Deploy-ML
+        git remote add origin https://huggingface.co/spaces/mujster/Deploy-ML-Pipeline
         git push -u origin main
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
