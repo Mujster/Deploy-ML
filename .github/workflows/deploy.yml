@@ -1,33 +1,41 @@
-name: Deploy to Vercel
+name: Deploy Flask API
 
 on:
   push:
     branches:
-      - main  # or your default branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'  # or your desired Python version
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.8'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v20
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          # vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          # vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod' 
-
+    - name: Deploy to Hugging Face
+      env:
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      run: |
+        # Log in to Hugging Face CLI
+        huggingface-cli login --token $HF_TOKEN
+        
+        # Deploy to Hugging Face Spaces
+        # Replace `my-space` with your Hugging Face Space name
+        huggingface-cli repo create my-space --type=space
+        git init
+        git add .
+        git commit -m "Initial commit"
+        git branch -M main
+        git remote add origin https://huggingface.co/spaces/username/Deploy-ML
+        git push -u origin main
