@@ -25,18 +25,16 @@ jobs:
 
     - name: Install Hugging Face CLI
       run: |
-        pip install huggingface-hub
+        pip install huggingface_hub
 
-    - name: Log in to Hugging Face CLI
+    - name: Create Hugging Face Space
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
-        huggingface-cli login --token $HF_TOKEN
+        python -c "import os from huggingface_hub import HfApi api = HfApi() api.create_repo(name='my-space', repo_type='space', token=os.getenv('HF_TOKEN'))"
 
     - name: Deploy to Hugging Face
       run: |
-        # Replace `my-space` with your Hugging Face Space name
-        huggingface-cli repo create my-space --type=space
         git init
         git add .
         git commit -m "Initial commit"
