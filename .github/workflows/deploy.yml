@@ -31,4 +31,4 @@ jobs:
         pip install pythonanywhere
 
         # Deploy using PythonAnywhere API
-        pythonanywhere --username <your-username> --password $PYTHONANYWHERE_API_KEY deploy
+        pythonanywhere --username Mujster --password $PYTHONANYWHERE_API_KEY deploy
