@@ -23,19 +23,23 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Deploy to Hugging Face
+    - name: Install Hugging Face CLI
+      run: |
+        pip install huggingface-hub
+
+    - name: Log in to Hugging Face CLI
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
-        # Log in to Hugging Face CLI
         huggingface-cli login --token $HF_TOKEN
-        
-        # Deploy to Hugging Face Spaces
+
+    - name: Deploy to Hugging Face
+      run: |
         # Replace `my-space` with your Hugging Face Space name
         huggingface-cli repo create my-space --type=space
         git init
         git add .
         git commit -m "Initial commit"
         git branch -M main
-        git remote add origin https://huggingface.co/spaces/username/Deploy-ML
+        git remote add origin https://huggingface.co/spaces/username/my-space
         git push -u origin main
