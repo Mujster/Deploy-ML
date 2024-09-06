@@ -2,48 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ML Model Prediction</title>
+    <title>ML API</title>
   </head>
   <body>
-    <h1>ML Model Prediction</h1>
+    <h1>Test the ML Model API</h1>
     <form id="predictForm">
-      <label for="sepal_length">Sepal Length:</label>
-      <input type="text" id="sepal_length" name="sepal_length" required />
-      <br />
-      <label for="sepal_width">Sepal Width:</label>
-      <input type="text" id="sepal_width" name="sepal_width" required />
-      <br />
-      <label for="petal_length">Petal Length:</label>
-      <input type="text" id="petal_length" name="petal_length" required />
-      <br />
-      <label for="petal_width">Petal Width:</label>
-      <input type="text" id="petal_width" name="petal_width" required />
-      <br />
-      <button type="button" onclick="makePrediction()">Predict</button>
+      <input
+        type="text"
+        name="features"
+        placeholder="Enter features separated by commas"
+      />
+      <button type="submit">Predict</button>
     </form>
-    <p id="result"></p>
+    <div id="result"></div>
 
     <script>
-      async function makePrediction() {
+      document.getElementById("predictForm").onsubmit = async function (e) {
+        e.preventDefault();
+        const features = this.features.value.split(",").map(Number);
+
         const response = await fetch("/predict", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            features: [
-              parseFloat(document.getElementById("sepal_length").value),
-              parseFloat(document.getElementById("sepal_width").value),
-              parseFloat(document.getElementById("petal_length").value),
-              parseFloat(document.getElementById("petal_width").value),
-            ],
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ features }),
         });
-        const result = await response.json();
-        document.getElementById("result").textContent =
-          "Prediction: " + result.prediction;
-      }
+        const data = await response.json();
+        document.getElementById("result").innerText =
+          "Prediction: " + data.prediction;
+      };
     </script>
   </body>
 </html>
